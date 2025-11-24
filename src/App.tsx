@@ -742,7 +742,7 @@ export default function App() {
   // Helper to find next valid question
   const getNextQuestionIndex = (startIndex: number, currentProfile: UserProfile) => {
     for (let i = startIndex; i < questions.length; i++) {
-      if (!questions[i].condition || questions[i].condition(currentProfile)) {
+      if (!questions[i].condition || questions[i].condition!(currentProfile)) {
         return i;
       }
     }
