@@ -455,13 +455,18 @@ export default function App() {
     // 17: Institution (Flavor)
     {
         text: "And what specific institution did you study at?",
-        type: 'input',
+        type: 'choice',
+        options: [
+            { label: "A good school", val: 'y', next: 18 },
+            { label: "Somewhere mediocre", val: 'x', next: 18 },
+            { label: "Uhhhhhh", val: 'z', next: 18 }
+            { label: "Je ne comprends pas?", val: 'a', next: 18 }
+        ],
         dummy: true, // Don't save
-        next: 18
     },
     // 18: Diploma Mill Comment
     {
-        text: "Hmph. It doesn't matter where you went to school in Canada. The only thing that matters is the length and field. Your application gets the same points if you're from UofT or from a diploma mill college.",
+        text: "Hmph. It doesn't matter where you went to school in Canada. The only thing that matters is the length and field. Your application gets the same points if you're from UofT or from a diploma mill.",
         type: 'statement',
         next: 19
     },
