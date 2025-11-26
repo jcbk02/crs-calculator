@@ -459,7 +459,7 @@ export default function App() {
         options: [
             { label: "A good school", val: 'y', next: 18 },
             { label: "Somewhere mediocre", val: 'x', next: 18 },
-            { label: "Uhhhhhh", val: 'z', next: 18 }
+            { label: "Uhhhhhh", val: 'z', next: 18 },
             { label: "Je ne comprends pas?", val: 'a', next: 18 }
         ],
         dummy: true, // Don't save
