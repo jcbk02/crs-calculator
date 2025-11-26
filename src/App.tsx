@@ -621,7 +621,7 @@ export default function App() {
       return (
           <div className="min-h-screen bg-gray-800 flex flex-col items-center p-4">
                {/* STAMP ANIMATION */}
-               <div className={`fixed inset-0 flex items-center justify-center pointer-events-none z-50 ${stamp ? 'animate-bounce' : ''}`}>
+               <div className={`fixed top-1/4 left-1/6 transform -translate-x-1/2 pointer-events-none z-50 ${stamp ? 'animate-bounce' : ''}`}>
                    <div className={`border-8 text-8xl font-black p-10 transform -rotate-12 opacity-90 ${stamp==='PASS' ? 'border-green-600 text-green-600' : 'border-red-600 text-red-600'}`}>
                        {stamp}
                    </div>
