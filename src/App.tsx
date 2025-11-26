@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 // --- DATA TYPES ---
 
@@ -275,7 +275,7 @@ export default function App() {
 
     // Dependency is scriptIndex, so it runs every time we move to the next step.
   }, [scriptIndex, scene]);
-  
+
   // --- SCRIPT DEFINITION ---
   // A linear array of dialogue steps. Some steps jump based on logic.
   const SCRIPT: ScriptStep[] = [
