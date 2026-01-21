@@ -123,6 +123,39 @@ const JARGON_MAP: Record<string, { acronym: string, definition: string, meaning:
     PNP: { acronym: 'PNP', definition: 'Provincial Nominee Program', meaning: 'A stream where a Canadian province selects candidates who meet their specific labor market needs, automatically awarding 600 CRS points.' },
 };
 
+// --- Scenario Data Structure ---
+interface ScenarioCandidate {
+  name: string;
+  age: number;
+  maritalStatus: MaritalStatus;
+  spouseAccompanying: boolean;
+  spouseCanadian: boolean;
+  education: EducationLevel;
+  canadianEducation: 'None' | '1or2Year' | '3YearOrMore';
+  english: { speak: number; listen: number; read: number; write: number };
+  french: { speak: number; listen: number; read: number; write: number };
+  workInCanada: number;
+  workForeign: number;
+  certificateOfQualification: boolean;
+  pnp: boolean;
+  siblingInCanada: boolean;
+  category: Category;
+  spouseEducation: EducationLevel;
+  spouseWorkInCanada: number;
+  spouseEnglish: { speak: number; listen: number; read: number; write: number };
+  crs: number;
+  verdict: string;
+  description: string;
+}
+
+interface Scenario {
+  id: number;
+  title: string;
+  description: string;
+  candidateA: ScenarioCandidate;
+  candidateB: ScenarioCandidate;
+}
+
 // --- Historical Draw Data (Expanded) ---
 interface Draw {
     stream: string;
@@ -194,6 +227,316 @@ const GROUPED_DRAWS = ALL_DRAW_HISTORY.reduce((acc, draw) => {
     acc[key].history.push({ score: draw.score, date: draw.date });
     return acc;
 }, {} as Record<string, { stream: string, latestScore: number, category: Category | 'CEC' | 'PNP' | 'General', history: { score: number, date: string }[] }>);
+
+// --- Scenario Data ---
+const SCENARIOS: Scenario[] = [
+  {
+    id: 1,
+    title: "Mega Francophone draw vs tiny CEC draw",
+    description: "Comparison between a Francophone candidate and a CEC pipeline candidate, showing the drastic differences in 2025 draw cutoffs.",
+    candidateA: {
+      name: "Profile A — Francophone Candidate",
+      age: 65,
+      maritalStatus: 'Single',
+      spouseAccompanying: false,
+      spouseCanadian: false,
+      education: 'TwoYear',
+      canadianEducation: 'None',
+      english: { speak: 6, listen: 6, read: 6, write: 6 },
+      french: { speak: 10, listen: 10, read: 10, write: 10 },
+      workInCanada: 0,
+      workForeign: 6,
+      certificateOfQualification: false,
+      pnp: false,
+      siblingInCanada: true,
+      category: 'French',
+      spouseEducation: 'None',
+      spouseWorkInCanada: 0,
+      spouseEnglish: { speak: 0, listen: 0, read: 0, write: 0 },
+      crs: 383,
+      verdict: "QUALIFIED - This person would have qualified to apply for Canadian Permanent Residence through the March 2025 Francophone draw with a CRS score of 383 versus the 379 cutoff.",
+      description: "Older candidate, no Canada experience, advanced English, fluent French, 6 years foreign work in TEER 2 (sales/retail supervisor), has an aunt in Canada."
+    },
+    candidateB: {
+      name: "Profile B — CEC Pipeline Candidate",
+      age: 26,
+      maritalStatus: 'Single',
+      spouseAccompanying: false,
+      spouseCanadian: false,
+      education: 'ThreeYear',
+      canadianEducation: '3YearOrMore',
+      english: { speak: 9, listen: 9, read: 9, write: 9 },
+      french: { speak: 0, listen: 0, read: 0, write: 0 },
+      workInCanada: 3,
+      workForeign: 0,
+      certificateOfQualification: false,
+      pnp: false,
+      siblingInCanada: true,
+      category: 'General',
+      spouseEducation: 'None',
+      spouseWorkInCanada: 0,
+      spouseEnglish: { speak: 0, listen: 0, read: 0, write: 0 },
+      crs: 525,
+      verdict: "NOT QUALIFIED - This person would NOT have qualified to apply for Canadian Permanent Residence during spring 2025. The only CEC draw in May had a CRS cutoff of 547 versus their score of 525.",
+      description: "Canadian Bachelor's in engineering, fluent English, 3 years Canadian work experience, has a brother in Canada, but misses the CEC cutoff."
+    }
+  },
+  {
+    id: 2,
+    title: "Average Francophone vs Average CEC candidate",
+    description: "Two average profiles in their respective programs, showing different qualification outcomes.",
+    candidateA: {
+      name: "Profile A — Average Francophone",
+      age: 30,
+      maritalStatus: 'Married',
+      spouseAccompanying: true,
+      spouseCanadian: false,
+      education: 'OneYear',
+      canadianEducation: '1or2Year',
+      english: { speak: 0, listen: 0, read: 0, write: 0 },
+      french: { speak: 9, listen: 9, read: 9, write: 9 },
+      workInCanada: 0,
+      workForeign: 3,
+      certificateOfQualification: false,
+      pnp: false,
+      siblingInCanada: false,
+      category: 'French',
+      spouseEducation: 'OneYear',
+      spouseWorkInCanada: 0,
+      spouseEnglish: { speak: 0, listen: 0, read: 0, write: 0 },
+      crs: 430,
+      verdict: "QUALIFIED - This candidate has a CRS score of 430, which is above the 2025 Francophone average of 419 and well above the minimum cutoff of 379. They would receive an invitation to apply.",
+      description: "1-year Canadian college program, fluent French (no English), 3+ years foreign work in admin (TEER 3), spouse has some education and fluent French."
+    },
+    candidateB: {
+      name: "Profile B — Average CEC",
+      age: 32,
+      maritalStatus: 'Married',
+      spouseAccompanying: true,
+      spouseCanadian: false,
+      education: 'PhD',
+      canadianEducation: '3YearOrMore',
+      english: { speak: 9, listen: 9, read: 9, write: 9 },
+      french: { speak: 0, listen: 0, read: 0, write: 0 },
+      workInCanada: 3,
+      workForeign: 0,
+      certificateOfQualification: false,
+      pnp: false,
+      siblingInCanada: false,
+      category: 'General',
+      spouseEducation: 'PhD',
+      spouseWorkInCanada: 0,
+      spouseEnglish: { speak: 9, listen: 9, read: 9, write: 9 },
+      crs: 527,
+      verdict: "QUALIFIED - This candidate has a CRS score of 527, just below the 2025 CEC average of 529 but well above the minimum cutoff of 515. They would receive an invitation to apply.",
+      description: "Canadian PhD, fluent English, 3 years TEER 1 work in Canada, spouse also has PhD and fluent English."
+    }
+  },
+  {
+    id: 3,
+    title: "Healthcare draw doesn't separate 'pharmacy cashier' vs 'doctor'",
+    description: "Three healthcare profiles showing how the CRS system doesn't differentiate by occupation prestige—only a few points separate very different roles.",
+    candidateA: {
+      name: "Profile A — Pharmacy Cashier",
+      age: 25,
+      maritalStatus: 'Single',
+      spouseAccompanying: false,
+      spouseCanadian: false,
+      education: 'TwoYear',
+      canadianEducation: '1or2Year',
+      english: { speak: 10, listen: 10, read: 10, write: 10 },
+      french: { speak: 0, listen: 0, read: 0, write: 0 },
+      workInCanada: 3,
+      workForeign: 0,
+      certificateOfQualification: false,
+      pnp: false,
+      siblingInCanada: false,
+      category: 'Healthcare',
+      spouseEducation: 'None',
+      spouseWorkInCanada: 0,
+      spouseEnglish: { speak: 0, listen: 0, read: 0, write: 0 },
+      crs: 473,
+      verdict: "NOT QUALIFIED - This candidate has a CRS score of 473, which is below the 2025 healthcare average of 481 and the minimum cutoff of 462. They would NOT receive an invitation.",
+      description: "2-year Canadian college diploma, perfect English (CLB 10), 3 years work as a line cook in healthcare setting."
+    },
+    candidateB: {
+      name: "Profile B — Foreign-trained Doctor",
+      age: 40,
+      maritalStatus: 'Single',
+      spouseAccompanying: false,
+      spouseCanadian: false,
+      education: 'Masters',
+      canadianEducation: 'None',
+      english: { speak: 9, listen: 9, read: 9, write: 9 },
+      french: { speak: 0, listen: 0, read: 0, write: 0 },
+      workInCanada: 2,
+      workForeign: 1,
+      certificateOfQualification: false,
+      pnp: false,
+      siblingInCanada: false,
+      category: 'Healthcare',
+      spouseEducation: 'None',
+      spouseWorkInCanada: 0,
+      spouseEnglish: { speak: 0, listen: 0, read: 0, write: 0 },
+      crs: 474,
+      verdict: "NOT QUALIFIED - This candidate has a CRS score of 474, only ONE point more than the line cook. Despite significant medical training and high earning potential, they fall short of the 2025 healthcare cutoff.",
+      description: "US medical degree, fluent English, 2 years Canadian work on LMIA, 1 year foreign work. Only 1 point separates them from the pharmacy cashier despite vastly different professional status."
+    }
+  },
+  {
+    id: 4,
+    title: "Perfect bilingual French speaker vs older doctor with Canadian experience",
+    description: "Bilingual advantage with no Canada footprint versus medical professional with experience but penalized by age.",
+    candidateA: {
+      name: "Profile A — Perfect Bilingual French Speaker",
+      age: 32,
+      maritalStatus: 'Married',
+      spouseAccompanying: true,
+      spouseCanadian: false,
+      education: 'ThreeYear',
+      canadianEducation: 'None',
+      english: { speak: 8, listen: 8, read: 8, write: 8 },
+      french: { speak: 10, listen: 10, read: 10, write: 10 },
+      workInCanada: 0,
+      workForeign: 5,
+      certificateOfQualification: false,
+      pnp: false,
+      siblingInCanada: false,
+      category: 'French',
+      spouseEducation: 'TwoYear',
+      spouseWorkInCanada: 0,
+      spouseEnglish: { speak: 0, listen: 0, read: 0, write: 0 },
+      crs: 487,
+      verdict: "QUALIFIED - This candidate has a CRS score of 487, which is above ALL candidates selected in 2025 Francophone draws (max 481). They would receive an invitation through every French-speaking draw.",
+      description: "Bachelor's degree, bilingual (good English, perfectly fluent French), 5 years foreign work in TEER 3 (financial/insurance sales), spouse has 2-year diploma and fluent French."
+    },
+    candidateB: {
+      name: "Profile B — Older Doctor with Canadian Experience",
+      age: 45,
+      maritalStatus: 'Married',
+      spouseAccompanying: true,
+      spouseCanadian: false,
+      education: 'Masters',
+      canadianEducation: 'None',
+      english: { speak: 9, listen: 9, read: 9, write: 9 },
+      french: { speak: 0, listen: 0, read: 0, write: 0 },
+      workInCanada: 3,
+      workForeign: 8,
+      certificateOfQualification: false,
+      pnp: false,
+      siblingInCanada: false,
+      category: 'Healthcare',
+      spouseEducation: 'ThreeYear',
+      spouseWorkInCanada: 0,
+      spouseEnglish: { speak: 8, listen: 8, read: 8, write: 8 },
+      crs: 438,
+      verdict: "NOT QUALIFIED - This candidate has a CRS score of 438, below both CEC (cutoff 515) and Healthcare (cutoff 462) minimums in 2025. They would NOT receive an invitation despite being a doctor.",
+      description: "Master's/med school, fluent English, 3 years Canadian work, 8 years foreign work, foreign spouse with Bachelor's and good English. Age 45 results in 0 age points, disqualifying them."
+    }
+  },
+  {
+    id: 5,
+    title: "STEM pipeline stranded in 2025 unless you add French",
+    description: "A Canadian engineering graduate has three different outcomes depending on adding French skills.",
+    candidateA: {
+      name: "Profile A — CEC Path (No French)",
+      age: 26,
+      maritalStatus: 'Single',
+      spouseAccompanying: false,
+      spouseCanadian: false,
+      education: 'ThreeYear',
+      canadianEducation: '3YearOrMore',
+      english: { speak: 9, listen: 9, read: 9, write: 9 },
+      french: { speak: 0, listen: 0, read: 0, write: 0 },
+      workInCanada: 3,
+      workForeign: 0,
+      certificateOfQualification: false,
+      pnp: false,
+      siblingInCanada: false,
+      category: 'STEM',
+      spouseEducation: 'None',
+      spouseWorkInCanada: 0,
+      spouseEnglish: { speak: 0, listen: 0, read: 0, write: 0 },
+      crs: 510,
+      verdict: "NOT QUALIFIED (CEC) - This candidate has a CRS score of 510, below the 2025 CEC minimum cutoff of 515. They would NOT receive an invitation through CEC.",
+      description: "UofT Civil Engineering graduate, perfectly fluent English, 3 years TEER 1 Canadian work. No STEM draw occurred in 2025."
+    },
+    candidateB: {
+      name: "Profile B — Adding French Skills",
+      age: 26,
+      maritalStatus: 'Single',
+      spouseAccompanying: false,
+      spouseCanadian: false,
+      education: 'ThreeYear',
+      canadianEducation: '3YearOrMore',
+      english: { speak: 9, listen: 9, read: 9, write: 9 },
+      french: { speak: 8, listen: 8, read: 8, write: 8 },
+      workInCanada: 3,
+      workForeign: 0,
+      certificateOfQualification: false,
+      pnp: false,
+      siblingInCanada: false,
+      category: 'STEM',
+      spouseEducation: 'None',
+      spouseWorkInCanada: 0,
+      spouseEnglish: { speak: 0, listen: 0, read: 0, write: 0 },
+      crs: 572,
+      verdict: "QUALIFIED - Adding above-average French raises their score to 572 (+12 for second language, +50 for French proficiency). They would NOW qualify for all 2025 CEC draws (max 547).",
+      description: "Same profile as Profile A but with CLB 8 French added. The language skills alone make the difference between rejection and invitation across all CEC streams."
+    }
+  },
+  {
+    id: 6,
+    title: "Trades draw prioritizes 'paper credentials' over economic impact",
+    description: "A line cook with Canadian credentials scores higher than a critical infrastructure electrician with mandatory Red Seal certification.",
+    candidateA: {
+      name: "Profile A — Line Cook (A&W)",
+      age: 30,
+      maritalStatus: 'Single',
+      spouseAccompanying: false,
+      spouseCanadian: false,
+      education: 'TwoYear',
+      canadianEducation: '1or2Year',
+      english: { speak: 10, listen: 10, read: 10, write: 10 },
+      french: { speak: 0, listen: 0, read: 0, write: 0 },
+      workInCanada: 1,
+      workForeign: 1,
+      certificateOfQualification: true,
+      pnp: false,
+      siblingInCanada: true,
+      category: 'Trades',
+      spouseEducation: 'None',
+      spouseWorkInCanada: 0,
+      spouseEnglish: { speak: 0, listen: 0, read: 0, write: 0 },
+      crs: 509,
+      verdict: "LIKELY QUALIFIED FOR TRADES - This candidate has a CRS score of 509. While they missed general draws, they would likely be positioned for Trades-category draws despite working in a low-wage, high-turnover role.",
+      description: "2-year Canadian diploma (Business Admin), native English (CLB 10), 1 year as cook, 1 year foreign work, Red Seal certificate available but not required for role, brother in Canada."
+    },
+    candidateB: {
+      name: "Profile B — Industrial Electrician (Steel Plant)",
+      age: 33,
+      maritalStatus: 'Single',
+      spouseAccompanying: false,
+      spouseCanadian: false,
+      education: 'OneYear',
+      canadianEducation: 'None',
+      english: { speak: 10, listen: 10, read: 10, write: 10 },
+      french: { speak: 0, listen: 0, read: 0, write: 0 },
+      workInCanada: 5,
+      workForeign: 6,
+      certificateOfQualification: true,
+      pnp: false,
+      siblingInCanada: false,
+      category: 'Trades',
+      spouseEducation: 'None',
+      spouseWorkInCanada: 0,
+      spouseEnglish: { speak: 0, listen: 0, read: 0, write: 0 },
+      crs: 502,
+      verdict: "LESS COMPETITIVE - This candidate has a CRS score of 502, which is 7 points LOWER than the line cook despite earning $150,000/year and holding a mandatory Red Seal certification. They lose points for lack of Canadian education and are slightly older.",
+      description: "1-year foreign diploma (UK), native English (CLB 10), 5 years as industrial electrician with 6 years prior UK experience. High-risk technical license, $150k/year salary, but critically lacks Canadian diploma."
+    }
+  }
+];
 
 
 // --- CRS CALCULATOR LOGIC ---
@@ -442,7 +785,272 @@ const DrawHistoryAccordion: React.FC<DrawAccordionProps> = ({ streamName, latest
 
 // --- Components ---
 
-const LandingPage = ({ onStart }: { onStart: () => void }) => (
+const ScenarioListPage = ({ onSelectScenario, onBack }: { onSelectScenario: (scenarioId: number) => void, onBack: () => void }) => (
+  <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-10 pb-10 px-4 font-sans">
+    <div className="max-w-4xl w-full bg-white shadow-2xl rounded-lg p-8 border-t-8 border-red-700">
+      <h1 className="text-4xl font-extrabold text-gray-800 mb-2 tracking-tight">
+        REAL-LIFE SCENARIOS
+      </h1>
+      <p className="text-lg text-gray-600 mb-8">
+        Explore realistic Canadian PR candidate profiles and see who would have qualified for 2025 Express Entry draws.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        {SCENARIOS.map((scenario) => (
+          <button
+            key={scenario.id}
+            onClick={() => onSelectScenario(scenario.id)}
+            className="text-left p-6 border-2 border-gray-200 rounded-lg hover:border-red-700 hover:bg-red-50 transition shadow-sm"
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                  Scenario {scenario.id}
+                </h3>
+                <p className="text-gray-700 font-semibold mb-2">{scenario.title}</p>
+                <p className="text-sm text-gray-600">{scenario.description}</p>
+              </div>
+              <div className="text-2xl ml-4">→</div>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      <button
+        onClick={onBack}
+        className="w-full bg-gray-600 text-white font-bold py-3 rounded-lg hover:bg-gray-700 transition shadow-lg text-lg"
+      >
+        ← BACK TO MAIN MENU
+      </button>
+    </div>
+  </div>
+);
+
+const ScenarioDetailPage = ({ scenarioId, onBack, onReturnToList }: { scenarioId: number, onBack: () => void, onReturnToList: () => void }) => {
+  const scenario = SCENARIOS.find(s => s.id === scenarioId);
+  
+  if (!scenario) return null;
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8 px-4 font-sans">
+      <div className="max-w-6xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden border border-red-100">
+        
+        {/* Header */}
+        <div className="bg-gray-800 text-white p-8 text-center">
+          <h2 className="text-3xl font-bold tracking-tight mb-2">Scenario {scenario.id}</h2>
+          <p className="text-xl text-red-300">{scenario.title}</p>
+        </div>
+
+        <div className="p-8">
+          
+          {/* Scenario Description */}
+          <p className="text-gray-700 mb-8 text-center text-lg">{scenario.description}</p>
+
+          {/* Two-Column Candidate Comparison */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            
+            {/* Candidate A */}
+            <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-6">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">{scenario.candidateA.name}</h3>
+              <p className="text-gray-600 mb-6 italic">{scenario.candidateA.description}</p>
+              
+              <div className="bg-white p-4 rounded-lg mb-4 border-l-4 border-gray-400">
+                <div className="grid grid-cols-2 gap-4 text-sm mb-4">
+                  <div>
+                    <p className="text-gray-600">Age</p>
+                    <p className="font-bold text-lg text-gray-800">{scenario.candidateA.age}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Marital Status</p>
+                    <p className="font-bold text-gray-800">{scenario.candidateA.maritalStatus}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Education</p>
+                    <p className="font-bold text-gray-800">{EDUCATION_MAP[scenario.candidateA.education]}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Category</p>
+                    <p className="font-bold text-gray-800">{scenario.candidateA.category}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Canada Work</p>
+                    <p className="font-bold text-gray-800">{scenario.candidateA.workInCanada} years</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Foreign Work</p>
+                    <p className="font-bold text-gray-800">{scenario.candidateA.workForeign} years</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-4 rounded-lg mb-4 border-l-4 border-blue-400">
+                <p className="text-sm text-gray-600 mb-2">Language Skills (CLB)</p>
+                <div className="grid grid-cols-4 gap-2 text-sm mb-3">
+                  <div>
+                    <p className="text-gray-600">English Speak</p>
+                    <p className="font-bold text-lg">{scenario.candidateA.english.speak}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Listen</p>
+                    <p className="font-bold text-lg">{scenario.candidateA.english.listen}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Read</p>
+                    <p className="font-bold text-lg">{scenario.candidateA.english.read}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Write</p>
+                    <p className="font-bold text-lg">{scenario.candidateA.english.write}</p>
+                  </div>
+                </div>
+                {(scenario.candidateA.french.speak > 0 || scenario.candidateA.french.listen > 0 || scenario.candidateA.french.read > 0 || scenario.candidateA.french.write > 0) && (
+                  <div className="grid grid-cols-4 gap-2 text-sm">
+                    <div>
+                      <p className="text-gray-600">French Speak</p>
+                      <p className="font-bold text-lg">{scenario.candidateA.french.speak}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Listen</p>
+                      <p className="font-bold text-lg">{scenario.candidateA.french.listen}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Read</p>
+                      <p className="font-bold text-lg">{scenario.candidateA.french.read}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Write</p>
+                      <p className="font-bold text-lg">{scenario.candidateA.french.write}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* CRS Score */}
+              <div className="bg-blue-50 border-2 border-blue-200 p-4 rounded-lg mb-4">
+                <p className="text-sm text-gray-600 text-center mb-1">CRS Score</p>
+                <p className="text-5xl font-extrabold text-blue-600 text-center">{scenario.candidateA.crs}</p>
+              </div>
+
+              {/* Verdict */}
+              <div className="bg-gray-100 p-4 rounded-lg border-l-4 border-gray-600">
+                <p className="font-bold text-gray-800 mb-2">Verdict:</p>
+                <p className="text-sm text-gray-700 leading-relaxed">{scenario.candidateA.verdict}</p>
+              </div>
+            </div>
+
+            {/* Candidate B */}
+            <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-6">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">{scenario.candidateB.name}</h3>
+              <p className="text-gray-600 mb-6 italic">{scenario.candidateB.description}</p>
+              
+              <div className="bg-white p-4 rounded-lg mb-4 border-l-4 border-gray-400">
+                <div className="grid grid-cols-2 gap-4 text-sm mb-4">
+                  <div>
+                    <p className="text-gray-600">Age</p>
+                    <p className="font-bold text-lg text-gray-800">{scenario.candidateB.age}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Marital Status</p>
+                    <p className="font-bold text-gray-800">{scenario.candidateB.maritalStatus}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Education</p>
+                    <p className="font-bold text-gray-800">{EDUCATION_MAP[scenario.candidateB.education]}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Category</p>
+                    <p className="font-bold text-gray-800">{scenario.candidateB.category}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Canada Work</p>
+                    <p className="font-bold text-gray-800">{scenario.candidateB.workInCanada} years</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Foreign Work</p>
+                    <p className="font-bold text-gray-800">{scenario.candidateB.workForeign} years</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white p-4 rounded-lg mb-4 border-l-4 border-blue-400">
+                <p className="text-sm text-gray-600 mb-2">Language Skills (CLB)</p>
+                <div className="grid grid-cols-4 gap-2 text-sm mb-3">
+                  <div>
+                    <p className="text-gray-600">English Speak</p>
+                    <p className="font-bold text-lg">{scenario.candidateB.english.speak}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Listen</p>
+                    <p className="font-bold text-lg">{scenario.candidateB.english.listen}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Read</p>
+                    <p className="font-bold text-lg">{scenario.candidateB.english.read}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">Write</p>
+                    <p className="font-bold text-lg">{scenario.candidateB.english.write}</p>
+                  </div>
+                </div>
+                {(scenario.candidateB.french.speak > 0 || scenario.candidateB.french.listen > 0 || scenario.candidateB.french.read > 0 || scenario.candidateB.french.write > 0) && (
+                  <div className="grid grid-cols-4 gap-2 text-sm">
+                    <div>
+                      <p className="text-gray-600">French Speak</p>
+                      <p className="font-bold text-lg">{scenario.candidateB.french.speak}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Listen</p>
+                      <p className="font-bold text-lg">{scenario.candidateB.french.listen}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Read</p>
+                      <p className="font-bold text-lg">{scenario.candidateB.french.read}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">Write</p>
+                      <p className="font-bold text-lg">{scenario.candidateB.french.write}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* CRS Score */}
+              <div className="bg-blue-50 border-2 border-blue-200 p-4 rounded-lg mb-4">
+                <p className="text-sm text-gray-600 text-center mb-1">CRS Score</p>
+                <p className="text-5xl font-extrabold text-blue-600 text-center">{scenario.candidateB.crs}</p>
+              </div>
+
+              {/* Verdict */}
+              <div className="bg-gray-100 p-4 rounded-lg border-l-4 border-gray-600">
+                <p className="font-bold text-gray-800 mb-2">Verdict:</p>
+                <p className="text-sm text-gray-700 leading-relaxed">{scenario.candidateB.verdict}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Navigation Buttons */}
+          <div className="flex gap-4">
+            <button
+              onClick={onReturnToList}
+              className="flex-1 bg-gray-600 text-white font-bold py-3 rounded-lg hover:bg-gray-700 transition shadow-lg text-lg"
+            >
+              ← BACK TO SCENARIOS
+            </button>
+            <button
+              onClick={onBack}
+              className="flex-1 bg-red-700 text-white font-bold py-3 rounded-lg hover:bg-red-800 transition shadow-lg text-lg"
+            >
+              HOME 🇨🇦
+            </button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const LandingPage = ({ onStart, onViewScenarios }: { onStart: () => void, onViewScenarios: () => void }) => (
   // Build Canada style: High contrast, patriotic colors, dense layout
   <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4 font-sans relative overflow-hidden">
     {/* Subtle Canadian Flag background element */}
@@ -471,6 +1079,15 @@ const LandingPage = ({ onStart }: { onStart: () => void }) => (
         className="bg-red-700 hover:bg-red-800 text-white font-bold py-4 px-10 rounded-lg transition duration-300 text-xl shadow-lg transform hover:scale-105"
       >
         START ASSESSMENT <span className="ml-2">🇨🇦</span>
+      </button>
+      
+      <p className="text-lg text-gray-800 font-semibold mt-8 mb-4">Or, look at some real-life examples</p>
+      
+      <button 
+        onClick={onViewScenarios}
+        className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-4 px-10 rounded-lg transition duration-300 text-lg shadow-lg transform hover:scale-105"
+      >
+        VIEW SCENARIOS
       </button>
     </div>
   </div>
@@ -735,6 +1352,9 @@ const questions = [
 // --- Main App Component ---
 export default function App() {
   const [started, setStarted] = useState(false);
+  const [scenariosMode, setScenariosMode] = useState(false);
+  const [scenarioListMode, setScenarioListMode] = useState(false);
+  const [selectedScenarioId, setSelectedScenarioId] = useState<number | null>(null);
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [profile, setProfile] = useState<UserProfile>(initialProfile);
   const [finished, setFinished] = useState(false);
@@ -742,7 +1362,7 @@ export default function App() {
   // Helper to find next valid question
   const getNextQuestionIndex = (startIndex: number, currentProfile: UserProfile) => {
     for (let i = startIndex; i < questions.length; i++) {
-      if (!questions[i].condition || questions[i].condition(currentProfile)) {
+      if (!questions[i].condition || questions[i].condition!(currentProfile)) {
         return i;
       }
     }
@@ -814,10 +1434,47 @@ export default function App() {
     setCurrentQIndex(0); // Reset to first question
     setProfile(initialProfile); // Reset profile data
     setFinished(false); // Ensure quiz view is reset
+    setScenariosMode(false);
+    setScenarioListMode(false);
+    setSelectedScenarioId(null);
   };
 
+  const handleViewScenarios = () => {
+    setScenariosMode(true);
+    setScenarioListMode(true);
+  };
 
-  if (!started) return <LandingPage onStart={() => setStarted(true)} />;
+  const handleSelectScenario = (scenarioId: number) => {
+    setSelectedScenarioId(scenarioId);
+    setScenarioListMode(false);
+  };
+
+  const handleReturnToScenarioList = () => {
+    setScenarioListMode(true);
+    setSelectedScenarioId(null);
+  };
+
+  // Render states
+  if (scenariosMode && scenarioListMode) {
+    return (
+      <ScenarioListPage 
+        onSelectScenario={handleSelectScenario}
+        onBack={handleRestart}
+      />
+    );
+  }
+
+  if (scenariosMode && selectedScenarioId !== null) {
+    return (
+      <ScenarioDetailPage 
+        scenarioId={selectedScenarioId}
+        onBack={handleRestart}
+        onReturnToList={handleReturnToScenarioList}
+      />
+    );
+  }
+
+  if (!started) return <LandingPage onStart={() => setStarted(true)} onViewScenarios={handleViewScenarios} />;
   if (finished) return <ResultPage profile={profile} onRestart={handleRestart} />;
 
   const q = questions[currentQIndex];
