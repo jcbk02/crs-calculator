@@ -739,8 +739,8 @@ const DrawHistoryAccordion: React.FC<DrawAccordionProps> = ({ streamName, latest
     const [isOpen, setIsOpen] = useState(false);
     const qualified = userScore >= latestScore;
 
-    const baseStyle = qualified ? 'bg-green-50 border-green-500' : 'bg-red-50 border-red-500';
-    const textColor = qualified ? 'text-green-600' : 'text-red-600';
+    const baseStyle = qualified ? 'bg-green-50 border-green-500' : 'bg-[#f9f3f0] border-[#9e3737]';
+    const textColor = qualified ? 'text-green-600' : 'text-[#9e3737]';
     const arrow = isOpen ? '▲' : '▼';
 
     return (
@@ -768,7 +768,7 @@ const DrawHistoryAccordion: React.FC<DrawAccordionProps> = ({ streamName, latest
                         {history.slice(0, 5).map((draw, idx) => (
                             <div 
                                 key={idx} 
-                                className={`p-2 rounded border ${userScore >= draw.score ? 'bg-green-100 border-green-300' : 'bg-red-100 border-red-300'}`}
+                                className={`p-2 rounded border ${userScore >= draw.score ? 'bg-green-100 border-green-300' : 'bg-[#f5e8e3] border-[#c9a892]'}`}
                             >
                                 <div className="font-bold text-base">{draw.score}</div>
                                 <div className="text-gray-600">{draw.date.split(',')[0]}</div>
@@ -786,8 +786,8 @@ const DrawHistoryAccordion: React.FC<DrawAccordionProps> = ({ streamName, latest
 // --- Components ---
 
 const ScenarioListPage = ({ onSelectScenario, onBack }: { onSelectScenario: (scenarioId: number) => void, onBack: () => void }) => (
-  <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-10 pb-10 px-4 font-sans">
-    <div className="max-w-4xl w-full bg-white shadow-2xl rounded-lg p-8 border-t-8 border-red-700">
+  <div className="min-h-screen bg-[#e9dace] flex flex-col items-center pt-10 pb-10 px-4 font-sans">
+    <div className="max-w-4xl w-full bg-[#e9dace] shadow-2xl rounded-lg p-8 border-t-8 border-[#9e3737]">
       <h1 className="text-4xl font-extrabold text-gray-800 mb-2 tracking-tight">
         REAL-LIFE SCENARIOS
       </h1>
@@ -800,7 +800,7 @@ const ScenarioListPage = ({ onSelectScenario, onBack }: { onSelectScenario: (sce
           <button
             key={scenario.id}
             onClick={() => onSelectScenario(scenario.id)}
-            className="text-left p-6 border-2 border-gray-200 rounded-lg hover:border-red-700 hover:bg-red-50 transition shadow-sm"
+            className="text-left p-6 border-2 border-gray-200 rounded-lg hover:border-[#9e3737] hover:bg-[#c9a892] transition shadow-sm"
           >
             <div className="flex items-start justify-between">
               <div className="flex-1">
@@ -832,13 +832,13 @@ const ScenarioDetailPage = ({ scenarioId, onBack, onReturnToList }: { scenarioId
   if (!scenario) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 font-sans">
-      <div className="max-w-6xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden border border-red-100">
+    <div className="min-h-screen bg-[#e9dace] py-8 px-4 font-sans">
+      <div className="max-w-6xl mx-auto bg-[#e9dace] shadow-2xl rounded-xl overflow-hidden border border-[#e9dace]">
         
         {/* Header */}
         <div className="bg-gray-800 text-white p-8 text-center">
           <h2 className="text-3xl font-bold tracking-tight mb-2">Scenario {scenario.id}</h2>
-          <p className="text-xl text-red-300">{scenario.title}</p>
+          <p className="text-xl text-[#c9a892]">{scenario.title}</p>
         </div>
 
         <div className="p-8">
@@ -850,11 +850,11 @@ const ScenarioDetailPage = ({ scenarioId, onBack, onReturnToList }: { scenarioId
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             
             {/* Candidate A */}
-            <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-6">
+            <div className="bg-[#c9a892] border-2 border-gray-200 rounded-lg p-6">
               <h3 className="text-2xl font-bold text-gray-800 mb-4">{scenario.candidateA.name}</h3>
               <p className="text-gray-600 mb-6 italic">{scenario.candidateA.description}</p>
               
-              <div className="bg-white p-4 rounded-lg mb-4 border-l-4 border-gray-400">
+              <div className="bg-[#e9dace] p-4 rounded-lg mb-4 border-l-4 border-gray-400">
                 <div className="grid grid-cols-2 gap-4 text-sm mb-4">
                   <div>
                     <p className="text-gray-600">Age</p>
@@ -932,18 +932,18 @@ const ScenarioDetailPage = ({ scenarioId, onBack, onReturnToList }: { scenarioId
               </div>
 
               {/* Verdict */}
-              <div className="bg-gray-100 p-4 rounded-lg border-l-4 border-gray-600">
+              <div className="bg-[#e9dace] p-4 rounded-lg border-l-4 border-gray-600">
                 <p className="font-bold text-gray-800 mb-2">Verdict:</p>
                 <p className="text-sm text-gray-700 leading-relaxed">{scenario.candidateA.verdict}</p>
               </div>
             </div>
 
             {/* Candidate B */}
-            <div className="bg-gray-50 border-2 border-gray-200 rounded-lg p-6">
+            <div className="bg-[#c9a892] border-2 border-gray-200 rounded-lg p-6">
               <h3 className="text-2xl font-bold text-gray-800 mb-4">{scenario.candidateB.name}</h3>
               <p className="text-gray-600 mb-6 italic">{scenario.candidateB.description}</p>
               
-              <div className="bg-white p-4 rounded-lg mb-4 border-l-4 border-gray-400">
+              <div className="bg-[#e9dace] p-4 rounded-lg mb-4 border-l-4 border-gray-400">
                 <div className="grid grid-cols-2 gap-4 text-sm mb-4">
                   <div>
                     <p className="text-gray-600">Age</p>
@@ -1021,7 +1021,7 @@ const ScenarioDetailPage = ({ scenarioId, onBack, onReturnToList }: { scenarioId
               </div>
 
               {/* Verdict */}
-              <div className="bg-gray-100 p-4 rounded-lg border-l-4 border-gray-600">
+              <div className="bg-[#e9dace] p-4 rounded-lg border-l-4 border-gray-600">
                 <p className="font-bold text-gray-800 mb-2">Verdict:</p>
                 <p className="text-sm text-gray-700 leading-relaxed">{scenario.candidateB.verdict}</p>
               </div>
@@ -1038,7 +1038,7 @@ const ScenarioDetailPage = ({ scenarioId, onBack, onReturnToList }: { scenarioId
             </button>
             <button
               onClick={onBack}
-              className="flex-1 bg-red-700 text-white font-bold py-3 rounded-lg hover:bg-red-800 transition shadow-lg text-lg"
+              className="flex-1 bg-[#9e3737] text-white font-bold py-3 rounded-lg hover:bg-[#7d2a2a] transition shadow-lg text-lg"
             >
               HOME 🇨🇦
             </button>
@@ -1052,17 +1052,17 @@ const ScenarioDetailPage = ({ scenarioId, onBack, onReturnToList }: { scenarioId
 
 const LandingPage = ({ onStart, onViewScenarios }: { onStart: () => void, onViewScenarios: () => void }) => (
   // Build Canada style: High contrast, patriotic colors, dense layout
-  <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4 font-sans relative overflow-hidden">
+  <div className="min-h-screen bg-[#e9dace] flex flex-col items-center justify-center p-4 font-sans relative overflow-hidden">
     {/* Subtle Canadian Flag background element */}
-    <div className="absolute inset-0 bg-white opacity-90"></div>
-    <div className="absolute left-0 top-0 h-full w-1/4 bg-red-700 opacity-10"></div>
-    <div className="absolute right-0 bottom-0 h-full w-1/4 bg-red-700 opacity-10"></div>
+    <div className="absolute inset-0 bg-[#e9dace] opacity-90"></div>
+    <div className="absolute left-0 top-0 h-full w-1/4 bg-[#9e3737] opacity-90"></div>
+    <div className="absolute right-0 bottom-0 h-full w-1/4 bg-[#9e3737] opacity-90"></div>
     
-    <div className="max-w-2xl w-full bg-white shadow-2xl rounded-lg p-8 text-center border-t-8 border-red-700 relative">
+    <div className="max-w-2xl w-full bg-[#e9dace] shadow-2xl rounded-lg p-8 text-center border-t-8 border-[#9e3737] relative">
       <h1 className="text-5xl font-extrabold text-gray-800 mb-4 tracking-tight">
         CANADA IMMIGRATION QUIZ 
       </h1>
-      <p className="text-xl font-bold text-red-700 mb-6 uppercase">
+      <p className="text-xl font-bold text-[#9e3737] mb-6 uppercase">
         <span className="text-gray-800 font-normal">Calculate Your</span> Express Entry Score
       </p>
       
@@ -1076,7 +1076,7 @@ const LandingPage = ({ onStart, onViewScenarios }: { onStart: () => void, onView
       
       <button 
         onClick={onStart}
-        className="bg-red-700 hover:bg-red-800 text-white font-bold py-4 px-10 rounded-lg transition duration-300 text-xl shadow-lg transform hover:scale-105"
+        className="bg-[#9e3737] hover:bg-[#7d2a2a] text-white font-bold py-4 px-10 rounded-lg transition duration-300 text-xl shadow-lg transform hover:scale-105"
       >
         START ASSESSMENT <span className="ml-2">🇨🇦</span>
       </button>
@@ -1116,28 +1116,28 @@ const ResultPage = ({ profile, onRestart }: { profile: UserProfile, onRestart: (
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 font-sans">
-      <div className="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden border border-red-100">
+    <div className="min-h-screen bg-[#e9dace] py-8 px-4 font-sans">
+      <div className="max-w-4xl mx-auto bg-[#e9dace] shadow-2xl rounded-xl overflow-hidden border border-[#e9dace]">
         
         {/* Header (Red/White High Contrast) */}
         <div className="bg-gray-800 text-white p-8 text-center">
           <h2 className="text-3xl font-bold tracking-tight">Your Comprehensive Ranking System Score</h2>
-          <div className="mt-4 text-8xl font-extrabold text-red-500">{userScore}</div>
+          <div className="mt-4 text-8xl font-extrabold text-[#9e3737]">{userScore}</div>
           <p className="uppercase tracking-widest text-sm mt-2 opacity-80">Total CRS Score (Max 1200)</p>
         </div>
 
         <div className="p-8">
           
           {/* Detailed Breakdown */}
-          <h3 className="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-red-200 pb-2 flex items-center">
-            POINTS BREAKDOWN <span className="ml-2 text-red-700">|</span> 
+          <h3 className="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-[#e9dace] pb-2 flex items-center">
+            POINTS BREAKDOWN <span className="ml-2 text-[#9e3737]">|</span> 
             <span className="text-base font-normal ml-2">CRS Factors</span>
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            <div className="bg-white p-4 rounded-lg border-2 border-red-100 shadow-sm">
+            <div className="bg-[#e9dace] p-4 rounded-lg border-2 border-[#e9dace] shadow-sm">
               <div className="flex justify-between items-center mb-2 border-b pb-1">
                 <h4 className="font-bold text-gray-700">Human Capital (Core)</h4>
-                <span className="font-extrabold text-red-700 text-xl">{breakdown.core.subtotal}</span>
+                <span className="font-extrabold text-[#9e3737] text-xl">{breakdown.core.subtotal}</span>
               </div>
               <ul className="text-sm text-gray-600 space-y-1 pl-2 border-l-2 border-gray-300">
                 <li className="flex justify-between"><span>Age:</span> <span>{breakdown.core.age}</span></li>
@@ -1146,10 +1146,10 @@ const ResultPage = ({ profile, onRestart }: { profile: UserProfile, onRestart: (
                 <li className="flex justify-between"><span>Canadian Work:</span> <span>{breakdown.core.canadianWork}</span></li>
               </ul>
             </div>
-            <div className="bg-white p-4 rounded-lg border-2 border-red-100 shadow-sm">
+            <div className="bg-[#e9dace] p-4 rounded-lg border-2 border-[#e9dace] shadow-sm">
               <div className="flex justify-between items-center mb-2 border-b pb-1">
                 <h4 className="font-bold text-gray-700">Spouse Factors (Max 40)</h4>
-                <span className="font-extrabold text-red-700 text-xl">{breakdown.spouse.subtotal}</span>
+                <span className="font-extrabold text-[#9e3737] text-xl">{breakdown.spouse.subtotal}</span>
               </div>
               <ul className="text-sm text-gray-600 space-y-1 pl-2 border-l-2 border-gray-300">
                 <li className="flex justify-between"><span>Education:</span> <span>{breakdown.spouse.education}</span></li>
@@ -1158,10 +1158,10 @@ const ResultPage = ({ profile, onRestart }: { profile: UserProfile, onRestart: (
               </ul>
               {breakdown.spouse.subtotal === 0 && <p className="text-xs text-gray-400 mt-2 italic">Not applicable (single/spouse is Canadian)</p>}
             </div>
-            <div className="bg-white p-4 rounded-lg border-2 border-red-100 shadow-sm">
+            <div className="bg-[#e9dace] p-4 rounded-lg border-2 border-[#e9dace] shadow-sm">
               <div className="flex justify-between items-center mb-2 border-b pb-1">
                 <h4 className="font-bold text-gray-700">Skill Transferability (Max 100)</h4>
-                <span className="font-extrabold text-red-700 text-xl">{breakdown.transferability.subtotal}</span>
+                <span className="font-extrabold text-[#9e3737] text-xl">{breakdown.transferability.subtotal}</span>
               </div>
               <ul className="text-sm text-gray-600 space-y-1 pl-2 border-l-2 border-gray-300">
                 <li className="flex justify-between"><span>Education Combos:</span> <span>{breakdown.transferability.education}</span></li>
@@ -1169,10 +1169,10 @@ const ResultPage = ({ profile, onRestart }: { profile: UserProfile, onRestart: (
                 <li className="flex justify-between"><span>Trade Certificate:</span> <span>{breakdown.transferability.certificate}</span></li>
               </ul>
             </div>
-            <div className="bg-white p-4 rounded-lg border-2 border-red-100 shadow-sm">
+            <div className="bg-[#e9dace] p-4 rounded-lg border-2 border-[#e9dace] shadow-sm">
               <div className="flex justify-between items-center mb-2 border-b pb-1">
                 <h4 className="font-bold text-gray-700">Additional Points (Max 600)</h4>
-                <span className="font-extrabold text-red-700 text-xl">{breakdown.additional.subtotal}</span>
+                <span className="font-extrabold text-[#9e3737] text-xl">{breakdown.additional.subtotal}</span>
               </div>
               <ul className="text-sm text-gray-600 space-y-1 pl-2 border-l-2 border-gray-300">
                 <li className="flex justify-between"><span>Sibling in Canada:</span> <span>{breakdown.additional.sibling}</span></li>
@@ -1184,8 +1184,8 @@ const ResultPage = ({ profile, onRestart }: { profile: UserProfile, onRestart: (
           </div>
           
           {/* Draw Results (New Accordion Structure) */}
-          <h3 className="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-red-200 pb-2 flex items-center">
-            DRAW ELIGIBILITY <span className="ml-2 text-red-700">|</span> 
+          <h3 className="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-[#e9dace] pb-2 flex items-center">
+            DRAW ELIGIBILITY <span className="ml-2 text-[#9e3737]">|</span> 
             <span className="text-base font-normal ml-2">Recent Express Entry Cut-offs</span>
           </h3>
           <p className="text-gray-600 mb-6">
@@ -1208,7 +1208,7 @@ const ResultPage = ({ profile, onRestart }: { profile: UserProfile, onRestart: (
           <div className="mt-8 pt-4 border-t border-gray-200">
             <button
                 onClick={onRestart}
-                className="w-full bg-red-700 text-white font-bold py-3 rounded-lg hover:bg-red-800 transition shadow-lg text-lg"
+                className="w-full bg-[#9e3737] text-white font-bold py-3 rounded-lg hover:bg-[#7d2a2a] transition shadow-lg text-lg"
             >
                 START A NEW ASSESSMENT 🇨🇦
             </button>
@@ -1480,11 +1480,20 @@ export default function App() {
   const q = questions[currentQIndex];
   const jargon = q.jargonId ? JARGON_MAP[q.jargonId] : null;
 
+  const handleBack = () => {
+    const prevIdx = currentQIndex - 1;
+    if (prevIdx >= 0) {
+      setCurrentQIndex(prevIdx);
+    } else {
+      setStarted(false);
+    }
+  };
+
   return (
     // Updated background for "Build Canada" style
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center pt-10 pb-10 px-4 font-sans">
-      <div className="bg-white max-w-xl w-full p-6 rounded-xl shadow-2xl border border-gray-200">
-        <div className="mb-3 text-sm font-bold text-red-700 uppercase tracking-widest flex justify-between items-center border-b pb-2">
+    <div className="min-h-screen bg-[#e9dace] flex flex-col items-center pt-10 pb-10 px-4 font-sans">
+      <div className="bg-[#e9dace] max-w-xl w-full p-6 rounded-xl shadow-2xl border border-gray-200">
+        <div className="mb-3 text-sm font-bold text-[#9e3737] uppercase tracking-widest flex justify-between items-center border-b pb-2">
           <span>Question {currentQIndex + 1} of {questions.filter(q => !q.condition || q.condition(profile)).length}</span>
           <span className="text-xl">🇨🇦</span>
         </div>
@@ -1498,13 +1507,23 @@ export default function App() {
 
         {/* JARGON Info Box (conditional) */}
         {jargon && (
-            <div className="bg-red-50 text-red-800 p-4 rounded-lg mb-6 text-sm leading-relaxed border border-red-200">
+            <div className="bg-[#f9f3f0] text-[#6b4a3a] p-4 rounded-lg mb-6 text-sm leading-relaxed border border-[#c9a892]">
                 <p className="font-bold">JARGON: {jargon.acronym} ({jargon.definition})</p>
-                <p className="text-xs mt-1 text-red-700">{jargon.meaning}</p>
+                <p className="text-xs mt-1 text-[#9e3737]">{jargon.meaning}</p>
             </div>
         )}
 
         <QuestionInput q={q} onNext={handleNext} />
+
+        {/* Back Button */}
+        <div className="mt-6 flex gap-3">
+          <button 
+            onClick={handleBack}
+            className="flex-1 bg-gray-600 text-white font-bold py-3 rounded-lg hover:bg-gray-700 transition shadow-lg text-lg"
+          >
+            ← BACK
+          </button>
+        </div>
       </div>
     </div>
   );
