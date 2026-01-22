@@ -31,7 +31,7 @@ interface UserProfile {
   spouseCanadian: boolean; 
   age: number;
   education: EducationLevel;
-  canadianEducation: 'None' | '1or2Year' | '3YearOrMore';
+  canadianEducation: 'None' | '1 or 2 Year' | '3 Year Or More';
   english: { speak: number; listen: number; read: number; write: number }; // CLB
   french: { speak: number; listen: number; read: number; write: number }; // CLB
   workInCanada: number; // Years
